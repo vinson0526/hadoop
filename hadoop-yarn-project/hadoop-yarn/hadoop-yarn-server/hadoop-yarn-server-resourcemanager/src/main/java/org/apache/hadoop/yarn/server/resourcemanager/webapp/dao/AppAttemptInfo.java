@@ -65,10 +65,10 @@ public class AppAttemptInfo {
       Container masterContainer = attempt.getMasterContainer();
       if (masterContainer != null && hasAccess) {
         this.containerId = masterContainer.getId().toString();
-        this.nodeHttpAddress = masterContainer.getNodeHttpAddress();
+        this.nodeHttpAddress = masterContainer.getHttpUrlPrefix(schemePrefix);
         this.nodeId = masterContainer.getNodeId().toString();
-        this.logsLink = WebAppUtils.getRunningLogURL(schemePrefix
-            + masterContainer.getNodeHttpAddress(),
+        this.logsLink = WebAppUtils.getRunningLogURL(
+            masterContainer.getHttpUrlPrefix(schemePrefix),
             masterContainer.getId().toString(), user);
 
         Gson gson = new Gson();

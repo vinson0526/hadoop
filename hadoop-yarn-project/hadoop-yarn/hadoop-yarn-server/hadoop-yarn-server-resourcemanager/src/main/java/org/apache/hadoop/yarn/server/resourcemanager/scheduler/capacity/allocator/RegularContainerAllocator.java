@@ -713,7 +713,7 @@ public class RegularContainerAllocator extends AbstractContainerAllocator {
     return BuilderUtils.newContainer(null, nodeId,
         node.getRMNode().getHttpAddress(), capability,
         schedulerKey.getPriority(), null,
-        schedulerKey.getAllocationRequestId());
+        schedulerKey.getAllocationRequestId()).setHttpUrlPrefix(node.getRMNode().getHttpUrlPrefix());
   }
 
   private ContainerAllocation handleNewContainerAllocation(

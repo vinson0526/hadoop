@@ -616,7 +616,7 @@ public abstract class AbstractYarnScheduler
     Container container =
         Container.newInstance(status.getContainerId(), node.getNodeID(),
           node.getHttpAddress(), status.getAllocatedResource(),
-          status.getPriority(), null);
+          status.getPriority(), null).setHttpUrlPrefix(node.getHttpUrlPrefix());
     container.setVersion(status.getVersion());
     container.setExecutionType(status.getExecutionType());
     container.setAllocationRequestId(status.getAllocationRequestId());

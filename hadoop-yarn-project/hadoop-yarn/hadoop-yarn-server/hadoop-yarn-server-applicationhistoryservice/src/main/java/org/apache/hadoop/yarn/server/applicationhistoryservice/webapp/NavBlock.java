@@ -38,7 +38,7 @@ public class NavBlock extends HtmlBlock {
       }
     }
     Hamlet.DIV<Hamlet> nav = html.
-        div("#nav").
+        div("#nav").$style("display: none").
             h3("Application History").
                 ul().
                     li().a(url("about"), "About").
@@ -62,10 +62,10 @@ public class NavBlock extends HtmlBlock {
         __();
 
     Hamlet.UL<Hamlet.DIV<Hamlet>> tools = nav.h3("Tools").ul();
-    tools.li().a("/conf", "Configuration").__()
-        .li().a("/logs", "Local logs").__()
-        .li().a("/stacks", "Server stacks").__()
-        .li().a("/jmx?qry=Hadoop:*", "Server metrics").__();
+    tools.li().a(root_url("/conf"), "Configuration").__()
+        .li().a(root_url("/logs"), "Local logs").__()
+        .li().a(root_url("/stacks"), "Server stacks").__()
+        .li().a(root_url("/jmx?qry=Hadoop:*"), "Server metrics").__();
 
     if (addErrorsAndWarningsLink) {
       tools.li().a(url("errors-and-warnings"), "Errors/Warnings").__();

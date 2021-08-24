@@ -374,10 +374,9 @@ public class RMContainerImpl implements RMContainer {
     readLock.lock();
     try {
       StringBuilder logURL = new StringBuilder();
-      logURL.append(WebAppUtils.getHttpSchemePrefix(rmContext
-          .getYarnConfiguration()));
+      String schemePrefix = WebAppUtils.getHttpSchemePrefix(rmContext.getYarnConfiguration());
       logURL.append(WebAppUtils.getRunningLogURL(
-          container.getNodeHttpAddress(), getContainerId().toString(),
+              container.getHttpUrlPrefix(schemePrefix), getContainerId().toString(),
           user));
       return logURL.toString();
     } finally {
@@ -816,9 +815,9 @@ public class RMContainerImpl implements RMContainer {
     try {
       if (container.getNodeHttpAddress() != null) {
         StringBuilder httpAddress = new StringBuilder();
-        httpAddress.append(WebAppUtils.getHttpSchemePrefix(rmContext
-            .getYarnConfiguration()));
-        httpAddress.append(container.getNodeHttpAddress());
+        String schemePrefix = WebAppUtils.getHttpSchemePrefix(rmContext
+            .getYarnConfiguration());
+        httpAddress.append(container.getHttpUrlPrefix(schemePrefix));
         return httpAddress.toString();
       } else {
         return null;

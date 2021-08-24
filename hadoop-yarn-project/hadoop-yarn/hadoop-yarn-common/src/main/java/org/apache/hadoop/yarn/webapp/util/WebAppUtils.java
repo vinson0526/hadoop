@@ -22,13 +22,18 @@ import static org.apache.hadoop.yarn.util.StringHelper.PATH_JOINER;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
+import java.net.SocketException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.UnknownHostException;
 import java.nio.charset.Charset;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.hadoop.classification.InterfaceAudience.Private;
 import org.apache.hadoop.classification.InterfaceStability.Evolving;
 import org.apache.hadoop.conf.Configuration;
@@ -36,6 +41,7 @@ import org.apache.hadoop.http.HtmlQuoting;
 import org.apache.hadoop.http.HttpConfig.Policy;
 import org.apache.hadoop.http.HttpServer2;
 import org.apache.hadoop.net.NetUtils;
+import org.apache.hadoop.yarn.api.ApplicationConstants;
 import org.apache.hadoop.yarn.conf.YarnConfiguration;
 import org.apache.hadoop.yarn.api.records.ApplicationId;
 import org.apache.hadoop.yarn.conf.HAUtil;
@@ -45,6 +51,7 @@ import org.apache.hadoop.yarn.util.RMHAUtils;
 import org.apache.hadoop.yarn.webapp.BadRequestException;
 import org.apache.hadoop.yarn.webapp.NotFoundException;
 import org.apache.http.NameValuePair;
+import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.client.utils.URLEncodedUtils;
 
 import javax.servlet.http.HttpServletRequest;
@@ -218,6 +225,32 @@ public class WebAppUtils {
       addr = getResolvedRMWebAppURLWithoutScheme(conf);
     }
     return addr;
+  }
+
+  public static URI getPingoRMUri(Configuration conf) throws URISyntaxException {
+    String domainUrl = conf.get(YarnConfiguration.YARN_PINGO_DOMAIN_URL);
+    if (StringUtils.isEmpty(domainUrl)) {
+      return null;
+    }
+    URIBuilder builder = new URIBuilder(domainUrl);
+    builder.setPath(System.getenv(ApplicationConstants.APPLICATION_WEB_PROXY_BASE_ENV));
+    return builder.build();
+  }
+  public static URI getPingoNMUri(Configuration conf)
+          throws UnknownHostException, SocketException, URISyntaxException {
+    String domainUrl = conf.get(YarnConfiguration.YARN_PINGO_DOMAIN_URL, "");
+    if (StringUtils.isEmpty(domainUrl)) {
+      return null;
+    }
+    URIBuilder nmUri = new URIBuilder(domainUrl);
+    String proxyBase = System.getenv(ApplicationConstants.APPLICATION_WEB_PROXY_BASE_ENV);
+    if (StringUtils.isEmpty(proxyBase)) {
+      return nmUri.setPath("/").build();
+    }
+    String nmWebPort = WebAppUtils.getNMWebAppURLWithoutScheme(conf).split(":")[1];
+    String ip = NetUtils.getLocalIpAddress(conf.get(YarnConfiguration.NM_IP_SUBNET, ""));
+    String path = YarnConfiguration.replaceNMAddress(proxyBase, ip, nmWebPort);
+    return nmUri.setPath(Paths.get("/", path).toString()).build();
   }
 
   public static String getResolvedRemoteRMWebAppURLWithScheme(

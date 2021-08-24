@@ -193,6 +193,11 @@ public class MockNodes {
     }
 
     @Override
+    public String getHttpUrlPrefix() {
+      return "";
+    }
+
+    @Override
     public Resource getTotalCapability() {
       return this.perNode;
     }

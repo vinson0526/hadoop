@@ -688,6 +688,15 @@ public abstract class BaseAMRMProxyTest {
     }
 
     @Override
+    public String getNodeIp() {
+      return null;
+    }
+    @Override
+    public String getHttpUrlPrefix() {
+      return null;
+    }
+
+    @Override
     public ConcurrentMap<ApplicationId, Application> getApplications() {
       return null;
     }

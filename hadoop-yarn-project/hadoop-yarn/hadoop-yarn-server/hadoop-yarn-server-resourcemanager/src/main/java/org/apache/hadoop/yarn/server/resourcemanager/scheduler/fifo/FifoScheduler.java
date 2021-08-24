@@ -697,7 +697,7 @@ public class FifoScheduler extends
         Container container = BuilderUtils.newContainer(containerId, nodeId,
             node.getRMNode().getHttpAddress(), capability,
             schedulerKey.getPriority(), null,
-            schedulerKey.getAllocationRequestId());
+            schedulerKey.getAllocationRequestId()).setHttpUrlPrefix(node.getRMNode().getHttpUrlPrefix());
         
         // Allocate!
         

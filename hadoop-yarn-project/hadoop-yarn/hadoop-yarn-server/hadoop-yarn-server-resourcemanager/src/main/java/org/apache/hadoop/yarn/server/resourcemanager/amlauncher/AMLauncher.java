@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -214,8 +215,9 @@ public class AMLauncher implements Runnable {
       ContainerLaunchContext container, ContainerId containerID)
       throws IOException {
     Map<String, String> environment = container.getEnvironment();
+    String basePath = System.getenv(ApplicationConstants.APPLICATION_WEB_PROXY_BASE_ENV);
     environment.put(ApplicationConstants.APPLICATION_WEB_PROXY_BASE_ENV,
-        application.getWebProxyBase());
+            Paths.get(basePath == null ? "" : basePath, application.getWebProxyBase()).toString());
     // Set AppSubmitTime to be consumable by the AM.
     ApplicationId applicationId =
         application.getAppAttemptId().getApplicationId();

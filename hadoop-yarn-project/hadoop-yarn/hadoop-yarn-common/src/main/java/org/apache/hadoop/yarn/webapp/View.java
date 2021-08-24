@@ -44,6 +44,11 @@ import org.slf4j.LoggerFactory;
 public abstract class View implements Params {
   public static final Logger LOG = LoggerFactory.getLogger(View.class);
 
+  private static String webProxyBase = System.getenv(ApplicationConstants.APPLICATION_WEB_PROXY_BASE_ENV);
+  public static void setWebProxyBase(String proxyBase) {
+    webProxyBase = proxyBase;
+  }
+
   @RequestScoped
   public static class ViewContext {
     final Controller.RequestContext rc;
@@ -187,7 +192,7 @@ public abstract class View implements Params {
   }
 
   public String root() {
-    String root = System.getenv(ApplicationConstants.APPLICATION_WEB_PROXY_BASE_ENV);
+    String root = webProxyBase;
     if(root == null || root.isEmpty()) {
       root = "/";
     }

@@ -23,6 +23,7 @@ import static org.apache.hadoop.yarn.webapp.YarnWebParams.APPLICATION_ID;
 import static org.apache.hadoop.yarn.webapp.YarnWebParams.WEB_UI_TYPE;
 
 import java.io.IOException;
+import java.net.URI;
 import java.security.PrivilegedExceptionAction;
 import java.util.Collection;
 import java.util.List;
@@ -207,8 +208,17 @@ public class AppBlock extends HtmlBlock {
       html.script().$type("text/javascript").__(script.toString()).__();
     }
 
-    String schedulerPath = WebAppUtils.getResolvedRMWebAppURLWithScheme(conf) +
-        "/cluster/scheduler?openQueues=" + app.getQueue();
+    String baseUri = WebAppUtils.getResolvedRMWebAppURLWithScheme(conf);
+    try {
+      URI pingoUri = WebAppUtils.getPingoRMUri(conf);
+      if (pingoUri != null) {
+        baseUri = pingoUri.toString();
+      }
+    } catch (Exception e) {
+      // do nothing
+      LOG.error("get configured pingo rm uri failed", e);
+    }
+    String schedulerPath = baseUri + "/cluster/scheduler?openQueues=" + app.getQueue();
 
     generateOverviewTable(app, schedulerPath, webUiType, appReport);
 

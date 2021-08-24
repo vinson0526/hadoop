@@ -662,7 +662,7 @@ public class FSAppAttempt extends SchedulerApplicationAttempt
     return BuilderUtils.newContainer(containerId, nodeId,
         node.getRMNode().getHttpAddress(), capability,
         schedulerKey.getPriority(), null,
-        schedulerKey.getAllocationRequestId());
+        schedulerKey.getAllocationRequestId()).setHttpUrlPrefix(node.getRMNode().getHttpUrlPrefix());
   }
 
   @Override

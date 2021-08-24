@@ -28,6 +28,8 @@ import org.apache.hadoop.yarn.server.nodemanager.containermanager.container.Upda
 import org.apache.hadoop.yarn.server.nodemanager.containermanager.loghandler.event.LogHandlerTokenUpdatedEvent;
 import org.apache.hadoop.yarn.server.nodemanager.containermanager.scheduler.ContainerSchedulerEvent;
 import org.apache.hadoop.yarn.server.nodemanager.recovery.RecoveryIterator;
+import org.apache.hadoop.yarn.webapp.View;
+import org.apache.hadoop.yarn.webapp.util.WebAppUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.apache.hadoop.classification.InterfaceAudience.Private;
@@ -172,6 +174,7 @@ import org.apache.hadoop.yarn.util.timeline.TimelineUtils;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
@@ -656,8 +659,21 @@ public class ContainerManagerImpl extends CompositeService implements
       server.start();
       connectAddress = NetUtils.getConnectAddress(server);
     }
+    String nmIp = NetUtils.getLocalIpAddress(conf.get(YarnConfiguration.NM_IP_SUBNET, ""));
+    NodeManager.NMContext nmContext = ((NodeManager.NMContext)context);
     NodeId nodeId = buildNodeId(connectAddress, hostOverride);
-    ((NodeManager.NMContext)context).setNodeId(nodeId);
+    if (conf.getBoolean(YarnConfiguration.NM_USE_IP, YarnConfiguration.DEFAULT_NM_USE_IP)) {
+      nodeId = NodeId.newInstance(nmIp, connectAddress.getPort());
+    }
+    nmContext.setNodeId(nodeId);
+    nmContext.setNodeIp(nmIp);
+    URI nmUri = WebAppUtils.getPingoNMUri(conf);
+    if (nmUri != null) {
+      nmContext.setHttpUrlPrefix(nmUri.toString());
+      View.setWebProxyBase(nmUri.getPath());
+    } else {
+      nmContext.setHttpUrlPrefix("");
+    }
     this.context.getNMTokenSecretManager().setNodeId(nodeId);
     this.context.getContainerTokenSecretManager().setNodeId(nodeId);
 

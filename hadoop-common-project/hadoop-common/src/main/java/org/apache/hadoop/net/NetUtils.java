@@ -434,6 +434,36 @@ public class NetUtils {
     }
     return addr;
   }
+
+  /**
+   * Returns the local ip address
+   *
+   * @param subnet used to filter ip in multi interfaces environment
+   * @return the ip
+   * @throws UnknownHostException
+   * @throws SocketException
+   */
+  public static String getLocalIpAddress(String subnet)
+          throws UnknownHostException, SocketException {
+    SubnetInfo subnetInfo;
+    try {
+      subnetInfo = new SubnetUtils(subnet).getInfo();
+    } catch (IllegalArgumentException e) {
+      return InetAddress.getLocalHost().getHostAddress();
+    }
+    Enumeration<NetworkInterface> networkInterfaces = NetworkInterface.getNetworkInterfaces();
+    while (networkInterfaces.hasMoreElements()) {
+      NetworkInterface ni = networkInterfaces.nextElement();
+      Enumeration<InetAddress> addresses = ni.getInetAddresses();
+      while (addresses.hasMoreElements()) {
+        InetAddress addr = addresses.nextElement();
+        if (subnetInfo.isInRange(addr.getHostAddress())) {
+          return addr.getHostAddress();
+        }
+      }
+    }
+    throw new IllegalArgumentException("no local address matched subnet: " + subnet);
+  }
   
   /**
    * Same as <code>getInputStream(socket, socket.getSoTimeout()).</code>

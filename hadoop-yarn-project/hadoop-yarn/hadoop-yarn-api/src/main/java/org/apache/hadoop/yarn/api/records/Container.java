@@ -18,11 +18,13 @@
 
 package org.apache.hadoop.yarn.api.records;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.hadoop.classification.InterfaceAudience.Private;
 import org.apache.hadoop.classification.InterfaceAudience.Public;
 import org.apache.hadoop.classification.InterfaceStability.Evolving;
 import org.apache.hadoop.classification.InterfaceStability.Stable;
 import org.apache.hadoop.classification.InterfaceStability.Unstable;
+import org.apache.hadoop.net.NetUtils;
 import org.apache.hadoop.yarn.api.ApplicationMasterProtocol;
 import org.apache.hadoop.yarn.api.ContainerManagementProtocol;
 import org.apache.hadoop.yarn.util.Records;
@@ -285,5 +287,19 @@ public abstract class Container implements Comparable<Container> {
   @Unstable
   public void setAllocationTags(Set<String> allocationTags) {
 
+  }
+
+  public String getHttpUrlPrefix(String schemePrefix) {
+    String nodeHttpAddress = getNodeHttpAddress();
+    if (nodeHttpAddress != null && !nodeHttpAddress.contains(schemePrefix)) {
+      return schemePrefix + nodeHttpAddress;
+    }
+    return nodeHttpAddress;
+  }
+  public Container setHttpUrlPrefix(String urlPrefix) {
+    if (!StringUtils.isEmpty(urlPrefix)) {
+      setNodeHttpAddress(urlPrefix);
+    }
+    return this;
   }
 }

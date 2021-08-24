@@ -124,6 +124,7 @@ public class RMNodeImpl implements RMNode, EventHandler<RMNodeEvent> {
   private int httpPort;
   private final String nodeAddress; // The containerManager address
   private String httpAddress;
+  private String httpUrlPrefix;
   /* Snapshot of total resources before receiving decommissioning command */
   private volatile Resource originalTotalCapability;
   private volatile Resource totalCapability;
@@ -456,6 +457,16 @@ public class RMNodeImpl implements RMNode, EventHandler<RMNodeEvent> {
   @Override
   public String getHttpAddress() {
     return this.httpAddress;
+  }
+
+  @Override
+  public String getHttpUrlPrefix() {
+    return this.httpUrlPrefix;
+  }
+
+  public RMNodeImpl setHttpUrlPrefix(String httpUrlPrefix) {
+    this.httpUrlPrefix = httpUrlPrefix;
+    return this;
   }
 
   @Override
@@ -1040,6 +1051,7 @@ public class RMNodeImpl implements RMNode, EventHandler<RMNodeEvent> {
       } else {
         rmNode.httpPort = newNode.getHttpPort();
         rmNode.httpAddress = newNode.getHttpAddress();
+        rmNode.httpUrlPrefix = newNode.getHttpUrlPrefix();
         boolean isCapabilityChanged = false;
         if (!rmNode.getTotalCapability().equals(
             newNode.getTotalCapability())) {

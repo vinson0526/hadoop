@@ -252,6 +252,12 @@ public interface ApplicationConstants {
     NM_HTTP_PORT("NM_HTTP_PORT"),
 
     /**
+     * $NM_HTTP_URL_PREFIX
+     * Url prefix used to access node manager
+     */
+    NM_HTTP_URL_PREFIX("NM_HTTP_URL_PREFIX"),
+
+    /**
      * $NM_PORT
      * Final, exported by NodeManager and non-modifiable by users.
      */

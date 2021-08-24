@@ -183,7 +183,11 @@ class NodesPage extends RmView {
           nodeTableData.append("\",\"").append("N/A").append("\",\"");
         } else {
           String httpAddress = info.getNodeHTTPAddress();
-          nodeTableData.append("\",\"<a ").append("href='" + "//" + httpAddress)
+          String httpLink = ni.getHttpUrlPrefix();
+          if (org.apache.commons.lang3.StringUtils.isEmpty(httpLink)) {
+            httpLink = "//" + httpAddress;
+          }
+          nodeTableData.append("\",\"<a ").append("href='" + httpLink)
               .append("'>").append(httpAddress).append("</a>\",").append("\"");
         }
 

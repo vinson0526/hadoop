@@ -64,6 +64,19 @@ public interface Context {
    */
   int getHttpPort();
 
+  /**
+   * Return the ip address used by this node
+   *
+   * @return the node ip
+   */
+  String getNodeIp();
+  /**
+   * Return the node http url prefix used to access the webserver, can be a delegate address
+   *
+   * @return the http url prefix
+   */
+  String getHttpUrlPrefix();
+
   ConcurrentMap<ApplicationId, Application> getApplications();
 
   Map<ApplicationId, Credentials> getSystemCredentialsForApps();

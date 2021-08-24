@@ -58,10 +58,9 @@ public class NavBlock extends HtmlBlock {
     UL<DIV<Hamlet>> tools = mainList.
           li().a(url("scheduler"), "Scheduler").__().__().
         h3("Tools").ul();
-    tools.li().a("/conf", "Configuration").__().
-          li().a("/logs", "Local logs").__().
-          li().a("/stacks", "Server stacks").__().
-          li().a("/jmx?qry=Hadoop:*", "Server metrics").__();
+    tools.li().a(root_url("/conf"), "Configuration").__().
+          li().a(root_url("/stacks"), "Server stacks").__().
+          li().a(root_url("/jmx?qry=Hadoop:*"), "Server metrics").__();
 
     if (addErrorsAndWarningsLink) {
       tools.li().a(url("errors-and-warnings"), "Errors/Warnings").__();

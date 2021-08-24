@@ -612,6 +612,10 @@ public class NodeManager extends CompositeService
 
     private NodeId nodeId = null;
 
+    private String nodeIp = null;
+
+    private String httpUrlPrefix = null;
+
     private Configuration conf = null;
 
     private NodeManagerMetrics metrics = null;
@@ -702,6 +706,15 @@ public class NodeManager extends CompositeService
     }
 
     @Override
+    public String getNodeIp() {
+      return this.nodeIp;
+    }
+    @Override
+    public String getHttpUrlPrefix() {
+      return this.httpUrlPrefix;
+    }
+
+    @Override
     public ConcurrentMap<ApplicationId, Application> getApplications() {
       return this.applications;
     }
@@ -761,6 +774,13 @@ public class NodeManager extends CompositeService
 
     public void setNodeId(NodeId nodeId) {
       this.nodeId = nodeId;
+    }
+
+    public void setNodeIp(String ip) {
+      this.nodeIp = ip;
+    }
+    public void setHttpUrlPrefix(String urlPrefix) {
+      this.httpUrlPrefix = urlPrefix;
     }
 
     @Override

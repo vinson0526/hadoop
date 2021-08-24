@@ -52,7 +52,7 @@ public class NavBlock extends HtmlBlock implements YarnWebParams {
     String RMWebAppURL =
         WebAppUtils.getResolvedRMWebAppURLWithScheme(this.conf);
 	  Hamlet.UL<Hamlet.DIV<Hamlet>> ul = html
-      .div("#nav")
+      .div("#nav").$style("display: none")
       .h3().__("ResourceManager").__()
         .ul()
           .li().a(RMWebAppURL, "RM Home").__().__()
@@ -68,10 +68,10 @@ public class NavBlock extends HtmlBlock implements YarnWebParams {
         .__()
       .h3("Tools")
         .ul()
-          .li().a("/conf", "Configuration").__()
-          .li().a("/logs", "Local logs").__()
-          .li().a("/stacks", "Server stacks").__()
-          .li().a("/jmx?qry=Hadoop:*", "Server metrics").__();
+          .li().a(root_url("/conf"), "Configuration").__()
+          .li().a(root_url("/logs"), "Local logs").__()
+          .li().a(root_url("/stacks"), "Server stacks").__()
+          .li().a(root_url("/jmx?qry=Hadoop:*"), "Server metrics").__();
     if (addErrorsAndWarningsLink) {
       ul.li().a(url("errors-and-warnings"), "Errors/Warnings").__();
     }

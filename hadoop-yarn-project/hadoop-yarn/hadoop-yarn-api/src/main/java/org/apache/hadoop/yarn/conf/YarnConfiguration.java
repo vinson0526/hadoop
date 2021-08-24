@@ -407,6 +407,13 @@ public class YarnConfiguration extends Configuration {
   public static final String YARN_ADMIN_ACL = 
     YARN_PREFIX + "admin.acl";
   public static final String DEFAULT_YARN_ADMIN_ACL = "*";
+
+  public static final String PINGO_PREFIX = "yarn.pingo.";
+
+  /**
+   * The pingo domain url including scheme, host, and optional port
+   */
+  public static final String YARN_PINGO_DOMAIN_URL = PINGO_PREFIX + "domain.url";
   
   /** ACL used in case none is found. Allows nothing. */
   public static final String DEFAULT_YARN_APP_ACL = " ";
@@ -1261,9 +1268,12 @@ public class YarnConfiguration extends Configuration {
   
   /** address of node manager IPC.*/
   public static final String NM_ADDRESS = NM_PREFIX + "address";
+  public static final String NM_IP_SUBNET = NM_PREFIX + "ip-subnet";
+  public static final String NM_USE_IP = NM_PREFIX + "use.ip";
   public static final int DEFAULT_NM_PORT = 0;
   public static final String DEFAULT_NM_ADDRESS = "0.0.0.0:"
       + DEFAULT_NM_PORT;
+  public static final Boolean DEFAULT_NM_USE_IP = false;
   
   /** The actual bind address for the NM.*/
   public static final String NM_BIND_HOST =
@@ -4340,6 +4350,9 @@ public class YarnConfiguration extends Configuration {
   public static final String NM_SCRIPT_BASED_NODE_LABELS_PROVIDER_SCRIPT_OPTS =
       NM_SCRIPT_BASED_NODE_LABELS_PROVIDER_PREFIX + "opts";
 
+  private static final String NM_IP = "{NM_IP}";
+  private static final String NM_WEB_PORT = "{NM_WEB_PORT}";
+
   /**
    * Node attribute provider fetch attributes interval and timeout.
    */
@@ -4776,6 +4789,10 @@ public class YarnConfiguration extends Configuration {
   public static boolean numaAwarenessEnabled(Configuration conf) {
     return conf.getBoolean(NM_NUMA_AWARENESS_ENABLED,
         DEFAULT_NM_NUMA_AWARENESS_ENABLED);
+  }
+
+  public static String replaceNMAddress(String val, String ip, String port) {
+    return val == null || ip == null ? "" : val.replace(NM_IP, ip).replace(NM_WEB_PORT, port);
   }
 
   /* For debugging. mp configurations to system output as XML format. */

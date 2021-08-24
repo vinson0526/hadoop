@@ -152,9 +152,6 @@ public class RMAppBlock extends AppBlock{
           String.valueOf(rmAppAttempt.getAMBlacklistManager()
             .getBlacklistUpdates().getBlacklistAdditions().size());
       String nodeLink = attemptInfo.getNodeHttpAddress();
-      if (nodeLink != null) {
-        nodeLink = WebAppUtils.getHttpSchemePrefix(conf) + nodeLink;
-      }
       String logsLink = attemptInfo.getLogsLink();
       attemptsTableData
           .append("[\"<a href='")

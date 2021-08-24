@@ -396,7 +396,7 @@ public class NodeStatusUpdaterImpl extends AbstractService implements
       RegisterNodeManagerRequest request =
           RegisterNodeManagerRequest.newInstance(nodeId, httpPort, totalResource,
               nodeManagerVersionId, containerReports, getRunningApplications(),
-              nodeLabels, physicalResource, nodeAttributes, nodeStatus);
+              nodeLabels, physicalResource, nodeAttributes, nodeStatus, this.context.getHttpUrlPrefix());
 
       if (containerReports != null && !containerReports.isEmpty()) {
         LOG.info("Registering with RM using containers :" + containerReports);

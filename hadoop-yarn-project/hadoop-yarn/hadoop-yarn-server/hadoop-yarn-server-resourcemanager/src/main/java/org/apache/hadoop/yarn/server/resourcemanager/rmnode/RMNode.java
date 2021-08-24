@@ -79,6 +79,12 @@ public interface RMNode {
    * @return the http-url address for this node
    */
   public String getHttpAddress();
+
+  /**
+   * the http url prefix used to access log from uniform address
+   * @return
+   */
+  public String getHttpUrlPrefix();
   
   /**
    * the latest health report received from this node.

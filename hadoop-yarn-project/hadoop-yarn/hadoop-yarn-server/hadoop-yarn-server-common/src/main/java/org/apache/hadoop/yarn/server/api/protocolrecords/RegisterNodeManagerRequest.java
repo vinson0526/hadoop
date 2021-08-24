@@ -54,7 +54,7 @@ public abstract class RegisterNodeManagerRequest {
       Resource physicalResource) {
     return newInstance(nodeId, httpPort, resource, nodeManagerVersionId,
         containerStatuses, runningApplications, nodeLabels, physicalResource,
-        null, null);
+        null, null, null);
   }
 
   public static RegisterNodeManagerRequest newInstance(NodeId nodeId,
@@ -62,7 +62,7 @@ public abstract class RegisterNodeManagerRequest {
       List<NMContainerStatus> containerStatuses,
       List<ApplicationId> runningApplications, Set<NodeLabel> nodeLabels,
       Resource physicalResource, Set<NodeAttribute> nodeAttributes,
-      NodeStatus nodeStatus) {
+      NodeStatus nodeStatus, String nodeUrlPrefix) {
     RegisterNodeManagerRequest request =
         Records.newRecord(RegisterNodeManagerRequest.class);
     request.setHttpPort(httpPort);
@@ -75,6 +75,7 @@ public abstract class RegisterNodeManagerRequest {
     request.setPhysicalResource(physicalResource);
     request.setNodeAttributes(nodeAttributes);
     request.setNodeStatus(nodeStatus);
+    request.setHttpUrlPrefix(nodeUrlPrefix);
     return request;
   }
   
@@ -85,6 +86,7 @@ public abstract class RegisterNodeManagerRequest {
   public abstract List<NMContainerStatus> getNMContainerStatuses();
   public abstract Set<NodeLabel> getNodeLabels();
   public abstract void setNodeLabels(Set<NodeLabel> nodeLabels);
+  public abstract void setHttpUrlPrefix(String urlPrefix);
   
   /**
    * We introduce this here because currently YARN RM doesn't persist nodes info
@@ -148,4 +150,6 @@ public abstract class RegisterNodeManagerRequest {
    * @param nodeStatus The status of the node.
    */
   public abstract void setNodeStatus(NodeStatus nodeStatus);
+
+  public abstract String getHttpUrlPrefix();
 }

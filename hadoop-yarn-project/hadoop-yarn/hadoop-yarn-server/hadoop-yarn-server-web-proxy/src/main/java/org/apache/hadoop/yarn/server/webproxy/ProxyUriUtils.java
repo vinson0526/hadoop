@@ -27,6 +27,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
+import java.nio.file.Paths;
 import java.util.List;
 
 import static org.apache.hadoop.yarn.util.StringHelper.ujoin;
@@ -160,7 +161,8 @@ public class ProxyUriUtils {
       ApplicationId id) {
     try {
       String path = getPath(id, originalUri == null ? "/" : originalUri.getPath());
-      return new URI(proxyUri.getScheme(), proxyUri.getAuthority(), path,
+      return new URI(proxyUri.getScheme(), proxyUri.getAuthority(),
+          Paths.get(proxyUri.getPath(), path).toString(),
           originalUri == null ? null : originalUri.getQuery(),
           originalUri == null ? null : originalUri.getFragment());
     } catch (URISyntaxException e) {

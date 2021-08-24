@@ -625,9 +625,12 @@ public class RMContextImpl implements RMContext {
   public String getAppProxyUrl(Configuration conf, ApplicationId applicationId)
   {
     try {
-      final String scheme = WebAppUtils.getHttpSchemePrefix(conf);
-      URI proxyUri = ProxyUriUtils.getUriFromAMUrl(scheme,
-          getProxyHostAndPort(conf));
+      URI proxyUri = WebAppUtils.getPingoRMUri(conf);
+      if (proxyUri == null) {
+        final String scheme = WebAppUtils.getHttpSchemePrefix(conf);
+        String proxy = WebAppUtils.getProxyHostAndPort(conf);
+        proxyUri = ProxyUriUtils.getUriFromAMUrl(scheme, proxy);
+      }
       URI result = ProxyUriUtils.getProxyUri(null, proxyUri, applicationId);
       return result.toASCIIString();
     } catch(URISyntaxException e) {

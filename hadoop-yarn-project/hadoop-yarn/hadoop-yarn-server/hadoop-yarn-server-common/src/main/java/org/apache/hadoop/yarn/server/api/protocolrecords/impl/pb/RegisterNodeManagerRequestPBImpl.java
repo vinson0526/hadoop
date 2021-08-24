@@ -430,7 +430,21 @@ public class RegisterNodeManagerRequestPBImpl extends RegisterNodeManagerRequest
     builder.clearNodeLabels();
     this.labels = nodeLabels;
   }
-  
+
+  @Override
+  public String getHttpUrlPrefix() {
+    RegisterNodeManagerRequestProtoOrBuilder p = viaProto ? proto : builder;
+    if (!p.hasHttpUrlPrefix()) {
+      return "";
+    }
+    return p.getHttpUrlPrefix();
+  }
+  @Override
+  public void setHttpUrlPrefix(String urlPrefix) {
+    maybeInitBuilder();
+    builder.setHttpUrlPrefix(urlPrefix);
+  }
+
   private synchronized void initNodeLabels() {
     if (this.labels != null) {
       return;

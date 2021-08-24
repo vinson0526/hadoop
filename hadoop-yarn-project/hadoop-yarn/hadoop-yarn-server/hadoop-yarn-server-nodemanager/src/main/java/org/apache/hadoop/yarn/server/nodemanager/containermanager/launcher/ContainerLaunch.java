@@ -1614,6 +1614,9 @@ public class ContainerLaunch implements Callable<Integer> {
     addToEnvMap(environment, nmVars, Environment.NM_HTTP_PORT.name(),
       String.valueOf(this.context.getHttpPort()));
 
+    addToEnvMap(environment, nmVars, Environment.NM_HTTP_URL_PREFIX.name(),
+        this.context.getHttpUrlPrefix());
+
     addToEnvMap(environment, nmVars, Environment.LOCAL_DIRS.name(),
         StringUtils.join(",", appDirs));
 
