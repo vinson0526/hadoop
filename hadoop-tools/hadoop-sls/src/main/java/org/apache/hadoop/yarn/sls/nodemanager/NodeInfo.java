@@ -112,6 +112,11 @@ public class NodeInfo {
       return httpAddress;
     }
 
+    @Override
+    public String getHttpUrlPrefix() {
+      return "";
+    }
+
     public String getHealthReport() {
       return healthReport;
     }

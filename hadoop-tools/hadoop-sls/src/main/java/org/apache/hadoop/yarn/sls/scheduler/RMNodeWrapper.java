@@ -85,6 +85,11 @@ public class RMNodeWrapper implements RMNode {
   }
 
   @Override
+  public String getHttpUrlPrefix() {
+    return node.getHttpUrlPrefix();
+  }
+
+  @Override
   public String getHealthReport() {
     return node.getHealthReport();
   }
