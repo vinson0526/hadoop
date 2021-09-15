@@ -123,7 +123,7 @@ class DefaultSchedulerPage extends RmView {
           "#cs a span { font-weight: normal; font-size: 80% }",
           "#cs-wrapper .ui-widget-header { padding: 0.2em 0.5em }",
           "table.info tr th {width: 50%}").__(). // to center info table
-      script("/static/jt/jquery.jstree.js").
+      script(root_url("/static/jt/jquery.jstree.js")).
       script().$type("text/javascript").
         __("$(function() {",
           "  $('#cs a span').addClass('ui-corner-all').css('position', 'absolute');",

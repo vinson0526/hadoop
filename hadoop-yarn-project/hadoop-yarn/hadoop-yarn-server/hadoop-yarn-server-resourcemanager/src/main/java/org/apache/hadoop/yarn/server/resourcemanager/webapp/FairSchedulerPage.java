@@ -246,7 +246,7 @@ public class FairSchedulerPage extends RmView {
           ".qstats { font-weight: normal; font-size: 80%; position: absolute }",
           ".qlegend { font-weight: normal; padding: 0 1em; margin: 1em }",
           "table.info tr th {width: 50%}").__(). // to center info table
-      script("/static/jt/jquery.jstree.js").
+      script(root_url("/static/jt/jquery.jstree.js")).
       script().$type("text/javascript").
         __("$(function() {",
           "  $('#cs a span').addClass('ui-corner-all').css('position', 'absolute');",
